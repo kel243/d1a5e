@@ -45,9 +45,10 @@ const AuthForm = ({ submitHandler, headingText, buttonText, inputs }) => {
                     <AuthInput
                         label={input.label}
                         name={input.name}
-                        type={input.name}
+                        type={input.type}
                         required={input.required}
                         forgotPassword={input.forgotPassword}
+                        error={input.error}
                     />
                 ))}
                 <Button className={classes.formButton} type="submit" variant="contained" size="large">
