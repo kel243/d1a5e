@@ -7,6 +7,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',
+    marginBottom: '2rem'
   },
   date: {
     fontSize: 11,
@@ -67,10 +68,15 @@ const SenderBubble = ({ time, text, attachments }) => {
   return (
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
+      {attachments?.length === 1 && <Grid className={classes.imageGrid} container>
+          {attachments.map((attachment, i) => <img className={determineImageType()} key={`${time}-${i}`} src={attachment} alt="attached" />)}
+        </Grid>
+
+      }
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      {attachments?.length > 0 && 
+      {attachments?.length > 1 && 
         <Grid className={classes.imageGrid} container>
           {attachments.map((attachment, i) => <img className={determineImageType()} key={`${time}-${i}`} src={attachment} alt="attached" />)}
         </Grid>
