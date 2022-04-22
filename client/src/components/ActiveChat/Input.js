@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { FormControl, FilledInput, Button } from '@material-ui/core';
+import { FormControl, FilledInput } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {ReactComponent as FileIcon} from "../../assets/file.svg"
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     justifySelf: 'flex-end',
     marginTop: 15,
+    position: 'relative'
   },
   input: {
     height: 70,
@@ -16,8 +17,8 @@ const useStyles = makeStyles(() => ({
   },
   fileButton: {
     position: 'absolute',
-    right: '3.5rem',
-    bottom: '0',
+    right: '2rem',
+    bottom: '2.25rem',
     backgroundColor: "transparent",
     cursor: "pointer",
     "&:hover": {
@@ -30,11 +31,26 @@ const useStyles = makeStyles(() => ({
   fileInput: {
     display: "none"
   },
+  imageCount: {
+    position: "absolute",
+    top: '-6px',
+    right: '-6px',
+    width: '20px',
+    height: '20px',
+    background: theme.palette.primary.main,
+    color: '#fff',
+    fontSize: '13px',
+    borderRadius: '10rem',
+    textAlign: 'center'
+  }
 }));
 
 const Input = ({ otherUser, conversationId, user, postMessage }) => {
   const classes = useStyles();
   const [text, setText] = useState('');
+  const [images, setImages] = useState([]);
+
+  const url = "https://api.cloudinary.com/v1_1/demo/image/upload";
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -44,16 +60,55 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formElements = form.elements;
+
+    // Deletes text after submitting to prevent user from submitting the same message multiple times while the upload process happens
+    const tempText = formElements.text.value
+    setText('');
+
+
     // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
+
+    const attachments = await uploadImages();
+
     const reqBody = {
-      text: formElements.text.value,
+      text: tempText,
       recipientId: otherUser.id,
       conversationId,
       sender: conversationId ? null : user,
+      attachments: attachments
     };
+    
     await postMessage(reqBody);
-    setText('');
   };
+
+  const uploadImages = async () => {
+    const urlArray = [];
+
+    // Deletes images after submitting to prevent user from submitting the same message multiple times while the upload process happens
+    const tempImages = images;
+    setImages([])
+
+    const formData = new FormData();
+
+    for (let i = 0; i < tempImages.length; i++) {
+      let file = images[i];
+      formData.append("file", file);
+      formData.append("upload_preset", "docs_upload_example_us_preset");
+  
+      await fetch(url, {
+        method: "POST",
+        body: formData
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          urlArray.push(data.url)
+        }).catch(e => console.log(e))
+    }
+
+    return urlArray
+  }
 
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
@@ -67,9 +122,12 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
           onChange={handleChange}
         />
       </FormControl>
-      <label class={classes.root} className={classes.fileButton}>
-          <input type="file" className={classes.fileInput}/>
-          <FileIcon />
+      <label className={classes.fileButton}>
+        <input type="file" multiple className={classes.fileInput} onChange={(e) => setImages([...e.target.files])}/>
+        <FileIcon />
+        {
+          images.length > 0 && <span className={classes.imageCount}>{images.length}</span>
+        }
       </label>
     </form>
   );
