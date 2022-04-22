@@ -9,9 +9,23 @@ import {
   TextField,
   FormHelperText,
 } from '@material-ui/core';
+import AuthLayout from './components/Layout/AuthLayout';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  authSwitcher: {
+    position: "fixed",
+    top: "2rem",
+    right: "3rem",
+    gap: "1rem"
+  }
+}));
+
 
 const Signup = ({ user, register }) => {
   const history = useHistory();
+
+  const classes = useStyles();
 
   const [formErrorMessage, setFormErrorMessage] = useState({});
 
@@ -36,10 +50,10 @@ const Signup = ({ user, register }) => {
   }, [user, history]);
 
   return (
-    <Grid container justifyContent="center">
-      <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
+    <AuthLayout>
+      <Grid container direction="column" justifyContent="center" alignItems="center">
+        <Grid className={classes.authSwitcher} container item alignItems='center' justifyContent='flex-end'>
+          <Typography>Already have an account?</Typography>
           <Link href="/login" to="/login">
             <Button>Login</Button>
           </Link>
@@ -103,8 +117,8 @@ const Signup = ({ user, register }) => {
             </Button>
           </Grid>
         </form>
-      </Box>
-    </Grid>
+      </Grid>
+    </AuthLayout>
   );
 };
 

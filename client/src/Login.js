@@ -8,6 +8,7 @@ import {
   FormControl,
   TextField,
 } from '@material-ui/core';
+import AuthLayout from './components/Layout/AuthLayout';
 
 const Login = ({ user, login }) => {
   const history = useHistory();
@@ -27,7 +28,7 @@ const Login = ({ user, login }) => {
   }, [user, history]);
 
   return (
-    <Grid container justifyContent="center">
+    <AuthLayout>
       <Box>
         <Grid container item>
           <Typography>Need to register?</Typography>
@@ -63,7 +64,7 @@ const Login = ({ user, login }) => {
           </Grid>
         </form>
       </Box>
-    </Grid>
+    </AuthLayout>
   );
 };
 
