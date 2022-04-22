@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FormControl, FilledInput } from '@material-ui/core';
+import { FormControl, FilledInput, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import {ReactComponent as FileIcon} from "../../assets/file.svg"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -12,6 +13,22 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#F4F6FA',
     borderRadius: 8,
     marginBottom: 20,
+  },
+  fileButton: {
+    position: 'absolute',
+    right: '3.5rem',
+    bottom: '0',
+    backgroundColor: "transparent",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "transparent",
+      "& svg path": {
+        fill: "#000"
+      }
+    }
+  },
+  fileInput: {
+    display: "none"
   },
 }));
 
@@ -50,6 +67,10 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
           onChange={handleChange}
         />
       </FormControl>
+      <label class={classes.root} className={classes.fileButton}>
+          <input type="file" className={classes.fileInput}/>
+          <FileIcon />
+      </label>
     </form>
   );
 };
