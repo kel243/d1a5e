@@ -58,7 +58,7 @@ const Signup = ({ user, register }) => {
                     },
                     {
                         label: "Confirm Password",
-                        name: "confirm password",
+                        name: "confirmPassword",
                         type: "password",
                         required: true,
                         error: formErrorMessage.confirmPassword,
