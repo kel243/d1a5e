@@ -123,7 +123,7 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
         />
       </FormControl>
       <label className={classes.fileButton}>
-        <input type="file" multiple className={classes.fileInput} onChange={(e) => setImages([...e.target.files])}/>
+        <input type="file" multiple accept="image/*" className={classes.fileInput} onChange={(e) => setImages([...e.target.files])}/>
         <FileIcon />
         {
           images.length > 0 && <span className={classes.imageCount}>{images.length}</span>

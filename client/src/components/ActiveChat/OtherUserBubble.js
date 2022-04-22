@@ -58,7 +58,7 @@ const OtherUserBubble = ({ text, time, otherUser, attachments }) => {
       return classes.singleImageText
     } 
 
-    if(attachments.length === 1 && text == "") {
+    if(attachments.length === 1 && text === "") {
       return classes.singleImageNoText
     }
 
