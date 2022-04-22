@@ -22,15 +22,17 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0px 5px 8px rgb(74 106 149 / 20%)",
       borderRadius: "5px",
       textDecoration: "none",
-      minWidth: '100px',
+      minWidth: '140px',
+      maxWidth: '170px',
       fontSize: theme.typography.fontSize,
       color: theme.palette.primary.main,
-      padding: '1rem 3.25rem',
+      padding: '1rem 2rem',
       "@media (max-width: 768px)": {
         padding: '1rem 1.25rem',
       },
       "@media (max-width: 600px)": {
-        fontSize: '12px'
+        fontSize: '12px',
+        minWidth: '110px',
       }
     },
     linkText: {
