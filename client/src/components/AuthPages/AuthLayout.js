@@ -43,7 +43,7 @@ const AuthLayout = ({children}) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.root} display="grid" gridTemplateColumns="4.2fr 5.8fr">
+    <Box className={classes.root} display="grid" gridTemplateColumns="41.5% 58.5%">
         <Grid className={classes.background} container direction="column" alignItems='center'>
             <Bubble />
             <Typography className={classes.backgroundText}>
