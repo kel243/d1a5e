@@ -1,111 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import {
-  Grid,
-  Box,
-  Typography,
-  Button,
-  FormControl,
-  TextField,
-  FormHelperText,
-} from '@material-ui/core';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import AuthLayout from "./components/AuthPages/AuthLayout";
+import AuthSwitcher from "./components/AuthPages/AuthSwitcher";
+import AuthForm from "./components/AuthPages/AuthForm";
 
 const Signup = ({ user, register }) => {
-  const history = useHistory();
+    const history = useHistory();
 
-  const [formErrorMessage, setFormErrorMessage] = useState({});
+    const [formErrorMessage, setFormErrorMessage] = useState({});
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formElements = form.elements;
-    const username = formElements.username.value;
-    const email = formElements.email.value;
-    const password = formElements.password.value;
-    const confirmPassword = formElements.confirmPassword.value;
+    const handleRegister = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const formElements = form.elements;
+        const username = formElements.username.value;
+        const email = formElements.email.value;
+        const password = formElements.password.value;
+        const confirmPassword = formElements.confirmPassword.value;
 
-    if (password !== confirmPassword) {
-      setFormErrorMessage({ confirmPassword: 'Passwords must match' });
-      return;
-    }
-    await register({ username, email, password });
-  };
+        if (password !== confirmPassword) {
+            setFormErrorMessage({ confirmPassword: "Passwords must match" });
+            return;
+        }
+        await register({ username, email, password });
+    };
 
-  useEffect(() => {
-    if (user && user.id) history.push('/home');
-  }, [user, history]);
+    useEffect(() => {
+        if (user && user.id) history.push("/home");
+    }, [user, history]);
 
-  return (
-    <Grid container justifyContent="center">
-      <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
-          <Link href="/login" to="/login">
-            <Button>Login</Button>
-          </Link>
-        </Grid>
-        <form onSubmit={handleRegister}>
-          <Grid>
-            <Grid>
-              <FormControl>
-                <TextField
-                  aria-label="username"
-                  label="Username"
-                  name="username"
-                  type="text"
-                  required
-                />
-              </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl>
-                <TextField
-                  label="E-mail address"
-                  aria-label="e-mail address"
-                  type="email"
-                  name="email"
-                  required
-                />
-              </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
-                <TextField
-                  aria-label="password"
-                  label="Password"
-                  type="password"
-                  inputProps={{ minLength: 6 }}
-                  name="password"
-                  required
-                />
-                <FormHelperText>
-                  {formErrorMessage.confirmPassword}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
-                <TextField
-                  label="Confirm Password"
-                  aria-label="confirm password"
-                  type="password"
-                  inputProps={{ minLength: 6 }}
-                  name="confirmPassword"
-                  required
-                />
-                <FormHelperText>
-                  {formErrorMessage.confirmPassword}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-            <Button type="submit" variant="contained" size="large">
-              Create
-            </Button>
-          </Grid>
-        </form>
-      </Box>
-    </Grid>
-  );
+    return (
+        <AuthLayout>
+            <AuthSwitcher heading="Already have an account?" buttonText="Login" url="/login" />
+            <AuthForm
+                submitHandler={handleRegister}
+                headingText="Create an account."
+                buttonText="Create"
+                inputs={[
+                    {
+                        label: "Username",
+                        name: "username",
+                        type: "text",
+                        required: true,
+                    },
+                    {
+                        label: "E-mail Address",
+                        name: "email",
+                        type: "email",
+                        required: true,
+                    },
+                    {
+                        label: "Password",
+                        name: "password",
+                        type: "password",
+                        required: true,
+                        error: formErrorMessage.confirmPassword,
+                    },
+                    {
+                        label: "Confirm Password",
+                        name: "confirmPassword",
+                        type: "password",
+                        required: true,
+                        error: formErrorMessage.confirmPassword,
+                    },
+                ]}
+            />
+        </AuthLayout>
+    );
 };
 
 export default Signup;
