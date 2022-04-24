@@ -83,31 +83,38 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
 
   const uploadImages = async () => {
     const urlArray = [];
-
+    const promisesArray = [];
     // Deletes images after submitting to prevent user from submitting the same message multiple times while the upload process happens
     const tempImages = images;
     setImages([])
 
-    const formData = new FormData();
+    tempImages.forEach((image) => {
+      promisesArray.push(getImageUrl(image, urlArray));
+    })
 
-    for (let i = 0; i < tempImages.length; i++) {
-      let file = images[i];
+    await Promise.all(promisesArray);
+
+    return urlArray
+  }
+
+  const getImageUrl = async (file, urlArray) => {
+    try {
+      const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", "docs_upload_example_us_preset");
-  
-      await fetch(url, {
+
+      const response = await fetch(url, {
         method: "POST",
         body: formData
       })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          urlArray.push(data.url)
-        }).catch(e => console.log(e))
-    }
 
-    return urlArray
+      const imageObj = await response.json();
+
+      urlArray.push(imageObj.url)
+    } catch (e) {
+      console.error(e)
+    }
+    
   }
 
   return (
