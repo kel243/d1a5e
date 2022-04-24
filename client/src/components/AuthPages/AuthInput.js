@@ -24,8 +24,8 @@ const AuthInput = ({ label, name, type, required, forgotPassword, error }) => {
         <FormControl margin="normal" className={classes.fullWidth} error={!!error}>
             <FormLabel>{label}</FormLabel>
             <TextField aria-label={name} name={name} type={type} required={required} />
-            {forgotPassword ? <Button className={classes.forgotButton}>Forgot?</Button> : ""}
-            {error ? <FormHelperText>{error}</FormHelperText> : ""}
+            {forgotPassword ?? <Button className={classes.forgotButton}>Forgot?</Button>}
+            {error ?? <FormHelperText>{error}</FormHelperText>}
         </FormControl>
     );
 };

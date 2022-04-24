@@ -43,6 +43,7 @@ const AuthForm = ({ submitHandler, headingText, buttonText, inputs }) => {
                 </Typography>
                 {inputs.map((input) => (
                     <AuthInput
+                        key={input.name}
                         label={input.label}
                         name={input.name}
                         type={input.type}
