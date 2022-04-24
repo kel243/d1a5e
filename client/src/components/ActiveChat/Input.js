@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FormControl, FilledInput } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {ReactComponent as FileIcon} from "../../assets/file.svg"
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,18 +100,15 @@ const Input = ({ otherUser, conversationId, user, postMessage }) => {
 
   const getImageUrl = async (file, urlArray) => {
     try {
+      const instance = axios.create()
+      
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "docs_upload_example_us_preset");
+      formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESENT);
 
-      const response = await fetch(url, {
-        method: "POST",
-        body: formData
-      })
+      const response = await instance.post(url, formData)
 
-      const imageObj = await response.json();
-
-      urlArray.push(imageObj.url)
+      urlArray.push(response.data.url)
     } catch (e) {
       console.error(e)
     }
